@@ -4,3 +4,4 @@ dependencies:
   - pip
   - pip:
       - Flask==2.2.3
+      - Flask-WTF==1.1.1
