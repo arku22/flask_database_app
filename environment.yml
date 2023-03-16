@@ -1,0 +1,6 @@
+name: flask_database_app
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - Flask==2.2.3
