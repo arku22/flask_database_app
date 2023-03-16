@@ -1,21 +1,36 @@
 {% extends "base.html" %}
 
 {% block pgtitle %}
-<title>Home</title>
+Home
 {% endblock %}
 
 {% block mainbody %}
 
+<!-- Top Header -->
+<div class="w-75 my-5">
+    <h1>
+        {% if name %}
+            Hello, {{ name|capitalize }}!
+        {% else %}
+            Hello, Stranger!
+        {% endif %}
+    </h1>
+</div>
+
+<!-- Name form -->
 <div class="mx-auto my-5 w-25">
-    <form>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
         <div>
-            <label for="namebox" class="form-label">Enter Name:</label>
-            <input type="text" class="form-control" id="namebox">
-
-            <button type="submit" class="btn btn-primary my-2">Submit</button>
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
         </div>
-    </form>
+        <div class="my-2">
+            {{ form.submit_btn(class="btn btn-primary") }}
+        </div>
 
+    </form>
 </div>
 
 {% endblock %}
