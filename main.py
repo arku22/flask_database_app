@@ -5,6 +5,7 @@ from wtforms.validators import DataRequired
 import os
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 
 load_dotenv()
@@ -16,6 +17,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.environ.get('db_user_
                                         f"{os.environ.get('db_name')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)  # init flask-migrate
 
 # name form
 class NameForm(FlaskForm):
