@@ -7,3 +7,4 @@ dependencies:
       - Flask-WTF==1.1.1
       - python-dotenv==1.0.0
       - Flask-SQLAlchemy==3.0.3
+      - psycopg2-binary==2.9.5
