@@ -1,7 +1,8 @@
 from flask import Flask, render_template, redirect, session, url_for
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.fields import EmailField
+from wtforms.validators import DataRequired, InputRequired, Email
 import os
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
@@ -22,6 +23,7 @@ migrate = Migrate(app, db)  # init flask-migrate
 # name form
 class NameForm(FlaskForm):
     name = StringField("Enter Name", validators=[DataRequired()])
+    email = EmailField("Email Address", validators=[InputRequired(), Email()])
     submit_btn = SubmitField("Submit")
 
 # database table definitions
@@ -29,7 +31,8 @@ class UserSubmit(db.Model):
     __tablename__ = "user_submit"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=False)
+    name = db.Column(db.String(64), unique=False, nullable=False)
+    email = db.Column(db.String(320), unique=False, nullable=False)
     ts = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
 
     def __repr__(self):
@@ -39,7 +42,8 @@ class UserSubmit(db.Model):
 def index():
     form = NameForm()
     if form.validate_on_submit():
-        user = UserSubmit(name=form.name.data)
+        user = UserSubmit(name=form.name.data,
+                          email=form.email.data)
         db.session.add(user)
         db.session.commit()
         session["name"] = form.name.data
