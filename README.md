@@ -33,21 +33,21 @@ To setup PostgreSQL on Ubuntu 20.04 you may use the guide:
 [How to Install PostgreSQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart)
 
 ### Setup database to listen to remote connections
-For PostgreSQL on Ubuntu 20.04 navigate to `/etc/postgresql/<version number>/main/` and edit the postgresql.conf file.
-Look for the line 
+For PostgreSQL on Ubuntu 20.04 navigate to `/etc/postgresql/<version number>/main/` and edit the `postgresql.conf` file.
+Look for the line:
 
 `#listen_addresses='localhost'`
 
 under the section 'CONNECTIONS AND AUTHENTICATION'
 
-Change it to 
+Change it to:
 
 `listen_address = '*'`
 
 
 
-By default, postgresql is set up to only listen for requests from the localhost. The '*' grants permission to listen to
-all ip addresses.
+By default, postgresql is set up to only listen for requests from the localhost. The argument `'*'` grants permission to
+listen to all ip addresses.
 
 Next, we need to grant access to all databases for all users with an encrypted password. To do this open file
 `/etc/postgresql/<version number>/main/pg_hba.conf` and add the following:
@@ -58,12 +58,15 @@ Next, we need to grant access to all databases for all users with an encrypted p
 
 ### Set a password for the database user
 By default, postgresql comes with a 'postgres' user. You can either create a new user and give it a password or you can
-create a password for the default user and use it for you flask app. To assign password to default user SSH into your 
-server and enter the below commands:
+create a password for the default user and use it for your flask app. To assign a password to the default user SSH into
+your server and enter the below commands:
 
 ```commandline
 sudo -u postgres psql
 ```
+
+You should now see the postgresql prompt that takes SQL queries. Then enter, making sure to substitute `'your_password'`
+with a password of your choice:
 
 ```
 ALTER USER postgres with encrypted password 'your_password';
@@ -74,7 +77,8 @@ For more details refer to [Install and Configure PostgreSQL](https://ubuntu.com/
 ### Firewall: Allow incoming database connections
 
 Next, your server needs to allow connections on the port where the database software is listening. For PostgreSQL
-this port is 5432. To allow connections to this port, SSH into your server as 'root' and then run the following command:
+this port is 5432 be default. To allow connections to this port, SSH into your server as 'root' and then run the following command:
+
 ```commandline
 sudo ufw allow 5432
 ```
@@ -86,12 +90,14 @@ sudo ufw enable
 
 ## Test your database server connection
 
-You can test either using the command line tool psql OR using a GUI like pgadmin (for postgresql).
+You can test either using the command line tool 
+[psql](https://www.postgresql.org/docs/current/app-psql.html#:~:text=psql%20is%20a%20terminal%2Dbased,or%20from%20command%20line%20arguments.)
+or using a GUI like [pgAdmin](https://www.pgadmin.org/) (for postgresql).
 
-Power ON your server before running the below
+Power ON your server before running the below on your local machine:
 
 ### Using psql
-Assuming that psql is already installed on your local machine, run
+Assuming that 'psql' is already installed on your local machine, run after making the necessary substitutions:
 
 ```commandline
 psql -h <host ip addr> -p <remote port> -U <db-username> -W
